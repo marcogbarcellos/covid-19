@@ -1,0 +1,8 @@
+{
+  "short_name": "covid-19-stats",
+  "name": "covid-19-stats",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
