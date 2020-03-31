@@ -99,7 +99,7 @@ function AppAppBar(props) {
 
             <GitHubIcon
               className={classes.githubIcon}
-              onClick={() => window.open('https://github.com/marcogbarcellos', '_blank')}
+              onClick={() => window.open('https://github.com/marcogbarcellos/covid-19', '_blank')}
             />
           </div>
         </Toolbar>
