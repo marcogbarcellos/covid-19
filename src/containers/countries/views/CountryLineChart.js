@@ -1,25 +1,28 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, useMediaQuery, makeStyles } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  title: {
+    marginBottom: theme.spacing(2),
+    marginLeft: theme.spacing(4),
+  },
+}));
 
 function CountryLineChart({ title, data, names }) {
+  const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   return (
-    <Grid item container lg={12} alignItems="center" justify="center">
-      <Grid item xs={12} container alignItems="center" justify="center">
+    <Grid item container xs={12}>
+      <Grid item xs={12} container className={classes.title}>
         <Typography variant="h2">{title}</Typography>
       </Grid>
-      <Grid item xs={12} container alignItems="center" justify="center">
-        <ResponsiveContainer width="75%" aspect={9.0 / 3.0}>
-          <LineChart
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid /* strokeDasharray="3 3"  */ />
+      <Grid item xs={12} container>
+        <ResponsiveContainer width={matches ? '75%' : '100%'} aspect={9.0 / 3.0}>
+          <LineChart data={data}>
+            <CartesianGrid />
             <XAxis dataKey="updateAt" />
             <YAxis />
             <Tooltip />

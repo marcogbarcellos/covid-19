@@ -1,10 +1,9 @@
-import React, { useEffect, useState, PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppAppBar from '../../components/AppAppBar';
 import LoadingPage from '../../common/pages/loading/LoadingPage';
 import { orderBy, xor } from 'lodash';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/styles';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Grid, Typography, TextField, MenuItem, Select, InputLabel, FormControl } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CountryLineChart from './views/CountryLineChart';
@@ -30,10 +29,11 @@ const useStyles = makeStyles(theme => ({
   },
   filters: {
     marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(5),
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 250,
   },
 }));
 
@@ -81,6 +81,19 @@ function Countries({ history, match }) {
     setDeaths(newDeaths);
   };
 
+  const updateCountryByCode = code => {
+    fetch(`https://corona-api.com/countries/${code}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        const country = json && json.data;
+        if (country) {
+          updateData(country);
+        }
+      });
+  };
+
   useEffect(() => {
     const { params } = match;
     fetch('https://corona-api.com/countries')
@@ -107,19 +120,6 @@ function Countries({ history, match }) {
         }
       });
   }, []);
-
-  const updateCountryByCode = code => {
-    fetch(`https://corona-api.com/countries/${code}`)
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        const country = json && json.data;
-        if (country) {
-          updateData(country);
-        }
-      });
-  };
 
   const handleChangeCountries = (e, newCountries) => {
     setSelectCountries(newCountries);
@@ -152,8 +152,8 @@ function Countries({ history, match }) {
     <>
       <AppAppBar history={history} />
       <Grid container spacing={5} justify="center" alignItems="center">
-        <Grid item xs={12} className={classes.filters} container justify="center" alignItems="center">
-          <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item xs={12} className={classes.filters} container>
+          <Grid item xs={12} lg={4} container>
             <Autocomplete
               multiple
               className={classes.categoriesSelect}
@@ -177,7 +177,7 @@ function Countries({ history, match }) {
               )}
             />
           </Grid>
-          <Grid item xs={6} container justify="center" alignItems="center">
+          <Grid item xs={12} lg={4} container>
             <FormControl className={classes.formControl}>
               <InputLabel id="simple-select-chart">Chart type</InputLabel>
               <Select labelId="select-chart" id="select-chart" value={chartType} onChange={handleChangeChartType}>
@@ -188,7 +188,7 @@ function Countries({ history, match }) {
             </FormControl>
           </Grid>
         </Grid>
-        <Grid item container xs={12} spacing={5} alignItems="center" justify="center">
+        <Grid item container xs={12} spacing={5}>
           {chartType === 'LINE' && (
             <>
               <CountryLineChart title="Number of Cases" data={orderedCases} names={selectedCountries} />

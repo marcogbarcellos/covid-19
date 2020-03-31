@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from './AppBar';
-import clsx from 'clsx';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import Toolbar, { styles as toolbarStyles } from '../components/Toolbar';
 import { Typography, Link } from '@material-ui/core';
