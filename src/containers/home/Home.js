@@ -10,7 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/styles';
-import { Tooltip, Grid } from '@material-ui/core';
+import { Tooltip, Grid, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   table: {
@@ -83,9 +83,16 @@ function Home({ history }) {
                     onClick={() => history.push(`/countries/${row.countryCode}`)}
                   >
                     <TableCell component="th" scope="row">
-                      <Tooltip title={row.country}>
-                        <img alt="sd" src={`https://www.countryflags.io/${row.countryCode}/shiny/64.png`} />
-                      </Tooltip>
+                      <Grid container alignItems="center">
+                        <Grid item xs={10} lg={4}>
+                          <Tooltip title={row.country}>
+                            <img alt="sd" src={`https://www.countryflags.io/${row.countryCode}/shiny/64.png`} />
+                          </Tooltip>
+                        </Grid>
+                        <Grid item xs={2} lg={4}>
+                          <Typography>{row.country}</Typography>
+                        </Grid>
+                      </Grid>
                     </TableCell>
                     <TableCell align="center">
                       {row.allCases && row.allCases.toLocaleString(undefined, { minimumFractionDigits: 0 })}
