@@ -64,7 +64,6 @@ function Home({ history }) {
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>> Cases</TableCell>
                   <TableCell>Country</TableCell>
                   <TableCell>All cases</TableCell>
                   <TableCell>All deaths</TableCell>
@@ -76,14 +75,13 @@ function Home({ history }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {stats.map((row, index) => (
+                {stats.map(row => (
                   <TableRow
                     key={row.name}
                     hover={true}
                     className={classes.tableRow}
                     onClick={() => history.push(`/countries/${row.countryCode}`)}
                   >
-                    <TableCell># {index + 1}</TableCell>
                     <TableCell component="th" scope="row">
                       <Tooltip title={row.country}>
                         <img alt="sd" src={`https://www.countryflags.io/${row.countryCode}/shiny/64.png`} />
