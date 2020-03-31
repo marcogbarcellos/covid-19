@@ -49,6 +49,7 @@ function Countries({ history, match }) {
   const [deaths, setDeaths] = useState({});
   const [countries, setCountries] = useState({});
   const [selectedCountries, setSelectCountries] = useState([]);
+  const [selectedCountriesWithColor, setSelectCountriesWithColor] = useState([]);
   const [chartType, setChartType] = React.useState('AREA');
 
   const handleChangeChartType = event => {
@@ -58,6 +59,12 @@ function Countries({ history, match }) {
   const updateData = country => {
     if (!selectedCountries.includes(country.name)) {
       setSelectCountries([...selectedCountries, country.name]);
+      setSelectCountriesWithColor(
+        [...selectedCountries, country.name].map(name => ({
+          name: name,
+          color: '#' + ((Math.random() * 0xffffff) << 0).toString(16),
+        }))
+      );
     }
     const addNewItems = (data, originalItems, valueField, limitValue) => {
       if (data[valueField] && data[valueField] <= limitValue) {
@@ -74,8 +81,8 @@ function Countries({ history, match }) {
     const newCases = { ...cases };
     const newDeaths = { ...deaths };
     for (const dayData of country.timeline) {
-      addNewItems(dayData, newCases, 'confirmed', 20);
-      addNewItems(dayData, newDeaths, 'deaths', 1);
+      addNewItems(dayData, newCases, 'confirmed', 0);
+      addNewItems(dayData, newDeaths, 'deaths', 0);
     }
     setCases(newCases);
     setDeaths(newDeaths);
@@ -123,6 +130,12 @@ function Countries({ history, match }) {
 
   const handleChangeCountries = (e, newCountries) => {
     setSelectCountries(newCountries);
+    setSelectCountriesWithColor(
+      newCountries.map(name => ({
+        name: name,
+        color: '#' + ((Math.random() * 0xffffff) << 0).toString(16),
+      }))
+    );
     const newCountry = xor(newCountries, selectedCountries) && xor(newCountries, selectedCountries)[0];
     if (newCountry) {
       updateCountryByCode(countries[newCountry].code);
@@ -189,22 +202,22 @@ function Countries({ history, match }) {
           </Grid>
         </Grid>
         <Grid item container xs={12} spacing={5}>
-          {chartType === 'LINE' && (
+          {chartType === 'LINE' && orderedCases.length > 0 && orderedDeaths.length > 0 && (
             <>
-              <CountryLineChart title="Number of Cases" data={orderedCases} names={selectedCountries} />
-              <CountryLineChart title="Number of Deaths" data={orderedDeaths} names={selectedCountries} />
+              <CountryLineChart title="Number of Cases" data={orderedCases} countries={selectedCountriesWithColor} />
+              <CountryLineChart title="Number of Deaths" data={orderedDeaths} countries={selectedCountriesWithColor} />
             </>
           )}
-          {chartType === 'BAR' && (
+          {chartType === 'BAR' && orderedCases.length > 0 && orderedDeaths.length > 0 && (
             <>
-              <CountryBarChart title="Number of Cases" data={orderedCases} names={selectedCountries} />
-              <CountryBarChart title="Number of Deaths" data={orderedDeaths} names={selectedCountries} />
+              <CountryBarChart title="Number of Cases" data={orderedCases} countries={selectedCountriesWithColor} />
+              <CountryBarChart title="Number of Deaths" data={orderedDeaths} countries={selectedCountriesWithColor} />
             </>
           )}
-          {chartType === 'AREA' && (
+          {chartType === 'AREA' && orderedCases.length > 0 && orderedDeaths.length > 0 && (
             <>
-              <CountryAreaChart title="Number of Cases" data={orderedCases} names={selectedCountries} />
-              <CountryAreaChart title="Number of Deaths" data={orderedDeaths} names={selectedCountries} />
+              <CountryAreaChart title="Number of Cases" data={orderedCases} countries={selectedCountriesWithColor} />
+              <CountryAreaChart title="Number of Deaths" data={orderedDeaths} countries={selectedCountriesWithColor} />
             </>
           )}
         </Grid>
