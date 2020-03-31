@@ -64,7 +64,7 @@ function Home({ history }) {
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Rank</TableCell>
+                  <TableCell>> Cases</TableCell>
                   <TableCell>Country</TableCell>
                   <TableCell>All cases</TableCell>
                   <TableCell>All deaths</TableCell>
